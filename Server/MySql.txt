@@ -1,0 +1,13 @@
+
+	错误：
+		SQL文件过大无法导入：Packet for query is too large (2491451 > 1048576). You can change this value on the server by setting the max_allowed_packet' variable
+	解决：
+		查询：show VARIABLES like '%max_allowed_packet%';		// 1048576(1M)
+		my.ini文件中的[mysqld]段中的＂max_allowed_packet = 20M＂，(可能有些文件会没有这一行的，如果没有这行内容，增加一行)
+		保存，重起MySQL服务，现在可以load大于1M的文件了
+		
+	错误：
+		GROUP_CONCAT 方法只能返回1024个字符，太长会被截取
+	解决：
+		SELECT @@global.group_concat_max_len;
+		my.ini文件中添加：group_concat_max_len = 1024000

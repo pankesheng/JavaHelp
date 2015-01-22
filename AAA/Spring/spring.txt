@@ -1,0 +1,62 @@
+
+Reference Manual(参考指南)
+http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/
+
+Samples-svn(例子的svn地址)
+https://anonsvn.springframework.org/svn/spring-samples/
+
+
+
+interface org.springframework.beans.factory.BeanFactory
+	提供了配置框架和基本功能
+interface org.springframework.context.ApplicationContext
+	继承多个BeanFactory的父类,增加了更多的企业特有的功能
+	
+class org.springframework.context.support.FileSystemXmlApplicationContext
+class org.springframework.context.support.ClassPathXmlApplicationContext
+	Java : 	ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"services.xml", "daos.xml"});
+			UserServiceImpl service = context.getBean("userService", UserServiceImpl.class);
+			
+class org.springframework.context.annotation.AnnotationConfigApplicationContext
+	Java :	ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+			FooService fooService = ctx.getBean(FooService.class);
+			fooService.doStuff();
+	Java :	AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+			ctx.scan("com.acme");
+			ctx.refresh();
+			FooService fooService = ctx.getBean(FooService.class);
+			fooService.doStuff();
+			
+			
+获取spring中的bean
+	1、新建一个存wac的单例类WebContextUtil.java
+		public class WebContextUtil {
+			private static WebApplicationContext wac;
+			private WebContextUtil(){}
+			public static void setWac(WebApplicationContext wac) {
+				WebContextUtil.wac = wac;
+			}
+			public static WebApplicationContext getWac() {
+				return wac;
+			}
+			public static Object getBean(String name) {
+				return wac.getBean(name);
+			}
+		}
+	2、新建一个Servlet类InitServlet.java
+		public class InitServlet extends HttpServlet {
+			@Override
+			public void init() throws ServletException {
+				WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
+				WebContextUtil.setWac(wac);
+				super.init();
+			}
+		}
+	3、在web.xml中注册Servlet
+		<servlet>
+			<servlet-name>initServlet</servlet-name>
+			<servlet-class>org.konghao.student.web.InitServlet</servlet-class>
+			<load-on-startup>2</load-on-startup>
+		</servlet>
+	4、获取bean
+		UserService us = (UserService) WebContextUtil.getBean("userService");

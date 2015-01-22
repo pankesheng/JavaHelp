@@ -1,0 +1,27 @@
+
+@CHARSET "GBK";
+
+#myId {
+	display: none; /* 隐藏myId域 */
+	display: block; /* 显示myId域 */
+}
+
+#myId {
+	cursor: pointer; /* 鼠标变手型 */
+	cursor: wait; /* 数遍变等待型 */
+}
+
+/* 截过长文字，在后面加... */
+#divId {
+	width: 100px;
+	white-space:nowrap;
+	overflow: hidden;
+	text-overflow:ellipsis;
+}
+
+/* td不换行：
+ * <td style="white-space:nowrap">姓名</td> */
+
+@import url("/css/global.css");
+
+/* 内容(content)、填充(padding)、边框(border)、边界(margin) */

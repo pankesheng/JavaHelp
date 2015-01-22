@@ -1,0 +1,23 @@
+服务器端：
+	1:安装软件
+	2:D:\share>svnadmin create myproject	//创建中心库D:\share\myproject
+	3:修改conf/svnserve.conf和passwd	//修改权限配置(创建用户)
+		# anon-access = read
+		# auth-access = write
+		###password-db = passwd
+	4:D:\share>svnserve -d -r myproject	//启动服务器
+客户端
+	1:D:\share\u1=>右键=>TortoiseSVN=>Repo-browser=>svn://服务器ip
+		http://svn.apache.org/repos/asf/struts
+	2:checkout
+	3:checkin	add=>commond
+
+eclipse集成
+	Work with：http://subclipse.tigris.org/update_1.8.x
+
+SVN服务装入操作系统服务(路径有空格时需在路径两端加上\")
+	C:\Documents and Settings\zouchongjin>sc create svnserver binPath= "D:\JAVA\Softwares\Subversion\bin\svnserve.exe --service -r D:\JAVA\Softwares\Subversion\workspaces" DisplayName= "subversion" depend= Tcpip start= auto
+	
+	C:\Documents and Settings\zouchongjin>sc create svnserver binPath= "\"D:\Program Files\Subversion\bin\svnserve.exe\" --service -r \"D:\Program Files\Subversion\share\workspaces\"" DisplayName= "subversion" depend= Tcpip start= auto
+	
+WM3js6Zb5ZN4

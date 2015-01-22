@@ -1,0 +1,78 @@
+
+CGI			基于传统服务器端模式
+Java Applet	基于本地虚拟机的运行模式
+Flash		基于浏览器插件的运行模式
+Web Start	在线安装运行模式
+AJAX		基于浏览器的运行模式
+RIA			基于Flex、Sliverlight桌面程序系统
+
+插件：http://www.spket.com/update/
+	
+<script type="text/javascript" src="../Ext/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="../Ext/ext-all-debug.js"></script>
+<script type="text/javascript" src="../JS/test.js"></script>
+<link rel="stylesheet" type="text/css" href="../Ext/resources/css/ext-all.css"></link>
+
+Ext.util.Observable
+	|_Ext.Component	//组件
+		|_Ext.BoxComponent
+			|_Ext.Button
+			|_Ext.Container	//容器
+				|_Ext.Viewport	//某布局填充整个浏览器
+				|_Ext.Panel	//面板
+					|_Ext.TabPanel	//页签
+					|_Ext.form.FormPanel	//表单面板
+					|_Ext.tree.TreePanel	//树面板
+					|_Ext.grid.GridPanel	//Grid控件面板
+						|_Ext.grid.EditorGridPanel	//指定某些的列可以编辑单元格【可用于MIS列表页面,另tbar和bbar属性添加上表头和分页】
+					|_Ext.Window
+				|_Ext.Toolbar	//基本工具栏类
+					|_Ext.PagingToolbar	//一个要和Ext.data.Store参与绑定并且自动提供翻页控制的工具栏。【可用于MIS列表分页】
+			|_Ext.form.Field	//表单元素的基类
+				|_Ext.form.TextField
+					|_Ext.form.TextArea
+				|_Ext.form.Checkbox
+					|_Ext.form.Radio
+				|_Ext.form.CheckboxGroup
+					|_Ext.form.RadioGroup
+	|_Ext.tree.TreeLoader	//树加载器
+	|_Ext.data.Node
+		|_Ext.tree.TreeNode
+			|_Ext.tree.AsyncTreeNode	//树的根节点
+	|_Ext.data.Connection
+		|_Ext.Ajax		
+	|_Ext.menu.Menu	//菜单
+	|_Ext.grid.ColumnModel	//列模型
+	|_Ext.data.Store	//数据源,封装了一个客户端的Record对象的缓存
+	|_Ext.data.DataProxy	//一个抽象的基类，只提供获取未格式化的原始数据。
+		|_Ext.data.HttpProxy	//能从Connection(针对某个URL地址)对象读取数据。
+	|_Ext.grid.AbstractSelectionModel
+		|_Ext.grid.RowSelectionModel	//Ext.grid.GridPanel的默认选区模型【可用于MIS列表页面选择记录,然后删除】。
+		
+	
+Ext.data.Record	//记录
+Ext.data.DataReader	//用于读取结构化数据（来自数据源）然后转换为Ext.data.Record对象集合和元数据Ext.data.Store这二者合成的对象。
+	|_Ext.data.JsonReader	//接受JSON响应结果，创建由Ext.data.Record对象组成的数组
+
+Ext.grid.RowNumberer	//自动列数字的生成	
+	
+Ext.MessageBox
+
+Ext.layout.ContainerLayout			//默认,	  			  容器布局
+	|_Ext.layout.FitLayout			//layout:'fit',		  自适应布局(在容器上自动铺开第一个面板以填充整个容器)
+		|_Ext.layout.CardLayout		//layout:'card',	  卡片式布局(activeItem:0,setActiveItem切换卡片)
+	|_Ext.layout.AccordionLayout	//layout:'accordion',折叠布局(包含多个子面板，任何时候都只有一个子面板处于打开状态)
+	|_Ext.layout.AnchorLayout		//layout:'anchor',	   锚点布局(anchor:'50% -10')
+		|_Ext.layout.AbsoluteLayout	//layout:'absolute', 绝对位置布局(x、y、anchor)
+		|_Ext.layout.FormLayout		//layout:'form',	   表单布局(通常情况下直接使用Ext.form.FormPanel表单面板)
+	|_Ext.layout.ColumnLayout		//layout:'column',	   列布局(columnWidth:.5)
+	|_Ext.layout.TableLayout		//layout:'table',	   表格布局(列数columns、跨行rowspan、跨列colspan)
+	|_Ext.layout.BorderLayout		//layout:'border',	   边框布局(east、south、west、north、center)
+		
+		
+		
+		
+		
+		
+		
+

@@ -1,0 +1,15 @@
+
+Oracle
+	停止PL/SQL的运行：Shift+ESC
+	Window Server 2008 无法安装 Oracle9i，只能在 Server 2008 上装 Server2003虚拟机再装Oracle9i
+	
+Mysql字段类型
+
+	tinyint：-128~127 或 0~255
+	smallint：-32768~32767 或 0~65535
+	mediumint：-8388608~8388607 或 0~16777215
+	int：-2147383648~2147483647 或 0~4294967295
+	bigint：-9223372036854775808~9223372036854775807 或 0~18446744073709551615
+	text：65535个字符
+	mediumtext：16777215个字符
+	longtext：4294967295个字符

@@ -1,0 +1,16 @@
+
+下载Express
+	npm install -g express
+	npm install -g express-generator
+	npm install -g supervisor
+	npm install -g coffee-script
+	express -V
+		// C:\Users\Administrator\AppData\Roaming\npm
+		
+新建项目
+	cd D:\JAVA\Software\NodeJs\workspace
+	express -e mytest
+	cd mytest
+	npm install
+	npm start
+	http://localhost:3000/

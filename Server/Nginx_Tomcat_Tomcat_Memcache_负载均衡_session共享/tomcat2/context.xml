@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!-- Tomcat_2 -->
+<Context>
+
+	<WatchedResource>WEB-INF/web.xml</WatchedResource>
+
+	<Manager
+		className="de.javakaffee.web.msm.MemcachedBackupSessionManager"
+		memcachedNodes="n1:192.168.1.119:11211"
+		sticky="false"
+		sessionBackupAsync="false"
+		requestUriIgnorePattern=".*\.(ico|png|gif|jpg|css|js)$"
+		transcoderFactoryClass="de.javakaffee.web.msm.serializer.kryo.KryoTranscoderFactory" />
+
+</Context>

@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="完整的包名路径">
+	<class name="完整的类名路径" table="存入数据库后的表名，如t_abc">
+		<id name="id" [column="属性名"][type="long"][length="32"]>
+			<generator class="native|uuid|assigned"/>//自增序列|唯一标识码|手动分配
+		</id>
+		
+		<property name="name"/>
+		
+		<!-- 1对1主键 -->
+		<one-to-one name="person"/>
+		
+		<id name="id">
+			<generator class="foreign">
+				<param name="property">idCard</param>
+			</generator>
+		</id>
+		
+		<!-- 1对1外键 -->
+		<one-to-one name="person" property-ref="idCard" class="Person"/>
+		
+		<many-to-one name="idCard" column="idCard_id" cascade="all" unique="true" not-null="true" class="IdCard"/>
+		
+		
+		<!-- 1对多外键 -->
+		<set name="students" inverse="false(默认)|true(维护资格失效)" cascade="none(默认)|all|delete" lazy="extra" order-by="orderNo">
+			<key column="classesid"/>
+			<one-to-many class="com.Student"/>
+		</set>
+		
+		<many-to-one name="classes" class="com.Classes" column="classesid" not-null="true" cascade="none" outer-join="true(使用外连接抓取关联的内容)|false(延迟加载)|auto"/>
+		
+		<!-- 多对多 -->
+		<set name="users" table="t_user_role" order-by="userid">
+			<key column="roleid"/>
+			<many-to-many class="com.User" column="userid"/>
+		</set>
+		
+		<set name="roles" table="t_user_role">
+			<key column="userid"/>
+			<many-to-many class="com.Role" column="roleid"/>
+		</set>
+		
+		<!-- 继承关系的一棵树 
+			<class name="com.zcj.business.itemmgr.model.DataDict" table="t_j_lx">
+				<id name="id">
+					<generator class="native"/>
+				</id>
+				<discriminator column="lx" type="string"/>
+				<property name="name" not-null="true"/>
+				<subclass name="Lylx" discriminator-value="lylx"/>
+				<subclass name="Wylx" discriminator-value="wylx"/>
+			</class>
+		-->
+		
+		
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,9 @@
+
+//QBC:排序：根据属性运算
+add(Restrictions.sqlRestriction(" 1=1 order by 数学成绩+语文成绩 asc" ));
+
+//get和load方法的区别
+１．如果找不到符合条件的纪录，get()方法将返回null．而load()将会报出ObjectNotFoundEcception．
+２．load()方法可以返回实体的代理类实例，而get()永远只返回实体类．
+３．load()方法可以充分利用二级缓存和内部缓存的现有数据，而get()方法只在内部缓存中进行查找，
+	如没有发现对应数据将跳过二级缓存，直接调用ＳＱＬ完成查找．

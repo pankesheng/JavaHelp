@@ -1,0 +1,38 @@
+
+	Server.xml
+	
+		<Connector URIEncoding="UTF-8" connectionTimeout="20000" port="8080" protocol="HTTP/1.1" redirectPort="8443"/>
+		
+	安装服务
+	
+		如果是用jrockit,则注册服务的时候需要修改TOMCAT_HOME/bin/service.bat
+			修改前：set PR_JVM=%JAVA_HOME%\jre\bin\server\jvm.dll
+			修改后：set PR_JVM=%JAVA_HOME%\jre\bin\jrockit\jvm.dll
+			
+		以管理员身份运行system32/cmd.exe
+			cd D:\tomcat6\bin
+			service.bat install tomcat6
+			更改服务启动类型--自动
+			
+	同一 Tomcat 多个端口部署不同的项目
+	
+		1、修改server.xml文件，复制一份<Service>...</Service>
+			   <Service name="Catalina1">
+			    <Connector port="9090" protocol="HTTP/1.1" 
+			               connectionTimeout="20000" 
+			               redirectPort="8443" URIEncoding="UTF-8"/>
+			    <Connector port="8010" protocol="AJP/1.3" redirectPort="8443" />
+			    <Engine name="Catalina1" defaultHost="localhost">
+			      <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+			             resourceName="UserDatabase"/>
+			      <Host name="localhost"  appBase="webapps1"
+			            unpackWARs="true" autoDeploy="true"
+			            xmlValidation="false" xmlNamespaceAware="false">
+			      </Host>
+			    </Engine>
+			  </Service>
+			  
+		2、创建文件
+			新建webapps1文件夹，复制webapps下的内容到webapps1里
+			新建conf\Catalina1文件夹，复制conf\Catalina下的内容到conf\Catalina1里
+			

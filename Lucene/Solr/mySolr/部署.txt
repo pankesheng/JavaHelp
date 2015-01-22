@@ -1,0 +1,34 @@
+
+----部署----
+【OK】1、apache-solr-3.5.0\example\solr\* ==> F:\JAVA\mySolr\home\
+【OK】2、apache-solr-3.5.0\example\webapps\solr ==> F:\JAVA\mySolr\server\
+3、修改mySolr\home\conf\solrconfig.xml
+	修改前：<dataDir>${solr.data.dir:}</dataDir>
+	修改后：<dataDir>${solr.data.dir:F:\JAVA\mySolr\home\data}</dataDir>
+4、修改Tomcat--server.xml
+	<Connector ... URIEncoding="UTF-8" />
+	<Context path="/solr" docBase="F:\JAVA\mySolr\server\solr" reloadable="false" >  
+		<Environment name="solr/home" type="java.lang.String" value="F:\JAVA\mySolr\home" override="true" />  
+	</Context>
+【OK】5、修改mySolr\home\conf\solrconfig.xml
+	修改前：<queryResponseWriter name="velocity" class="solr.VelocityResponseWriter" enable="${solr.velocity.enabled:true}"/>
+	修改后：<queryResponseWriter name="velocity" class="solr.VelocityResponseWriter" enable="${solr.velocity.enabled:false}"/>
+【OK】6、添加mmseg4j：mmseg4j-all-1.8.5.jar ==> F:\JAVA\mySolr\server\solr\WEB-INF\lib\
+【OK】7、添加mmseg4j：*.dic ==> F:\JAVA\mySolr\home\dic\
+【OK】8、添加mmseg4j：以下fieldType ==> F:\JAVA\mySolr\home\conf\schema.xml
+	<fieldType name="textComplex" class="solr.TextField" >
+      <analyzer>
+        <tokenizer class="com.chenlb.mmseg4j.solr.MMSegTokenizerFactory" mode="complex" dicPath="dic"/>
+      </analyzer>
+    </fieldType>
+	<fieldType name="textMaxWord" class="solr.TextField" >
+      <analyzer>
+        <tokenizer class="com.chenlb.mmseg4j.solr.MMSegTokenizerFactory" mode="max-word" dicPath="dic"/>
+      </analyzer>
+    </fieldType>
+	<fieldType name="textSimple" class="solr.TextField" >
+      <analyzer>
+        <tokenizer class="com.chenlb.mmseg4j.solr.MMSegTokenizerFactory" mode="simple" dicPath="dic"/>
+      </analyzer>
+    </fieldType>
+------------

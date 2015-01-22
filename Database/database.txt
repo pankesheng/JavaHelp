@@ -1,0 +1,54 @@
+
+
+"概念数据模型"：CDM(Conceptual Data Model)
+	ER图
+	1、实体、属性、关系(包括多对多)
+	2、不需完整定义实体属性。
+	3、存在继承和引用
+	
+"逻辑数据模型"：LDM(Logic Data Model)
+	1、实体、属性、关系、实体(增加中间实体的一对多==多对多关系)
+	2、需要完整定义实体属性。
+	3、在实体的属性中展示继承和引用
+
+"物理数据模型"：PDM(Physical Data Model)
+	1、表、字段、外键
+	2、确定字段名、类型、长度、约束等。
+
+"面向对象模型"：OOM(Object-Oriented Model)
+	包含一系列包，类，接口，和他们的关系。
+	
+"业务程序模型"：BPM(Business Process Model)
+	描述业务的各种不同内在任务和内在流程，而且客户如何以这些任务和流程互相影响。 
+	
+"信息流模型"：ILM(Information Liquidity Model)
+	是一个高层的信息流模型，主要用于分布式数据库之间的数据复制。
+	
+	
+PowerDesigner
+	CDM<==>PDM	
+		Tools -> Generate Physical Data Model
+		Tools -> Generate Conceptual Data Model
+			
+	PDM==>SQL
+		Database -> Generate Database
+	
+	SQL==>PDM	
+		File -> Reverse Engineer -> Database
+	
+	PDM==>DOC
+		右键单击模型 -> New -> Report
+
+
+
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	

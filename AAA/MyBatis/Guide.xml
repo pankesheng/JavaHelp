@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dou.book.data.XMapper">
+
+
+	<!-- 一对一嵌套查询 -->
+	<resultMap id="blogResult" type="Blog">
+		<id property="id" column="blog_id" />
+		<result property="title" column="blog_title" />
+		<!-- column字段所指定的值作为参数传给selectAuthor方法,并将查询结果自动设置到property所指定的属性中 -->
+		<association property="author" column="blog_author_id" javaType="Author" select="selectAuthor" />
+	</resultMap>
+	<select id="selectBlog" parameterType="int" resultMap="blogResult">
+		select * from blog where id = #{id}
+	</select>
+	<select id="selectAuthor" parameterType="int" resultType="Author">
+		select * from author where id = #{id}
+	</select>
+
+	<!-- 一对一嵌套结果  -->
+	<resultMap id="authorResult" type="Author">
+		<id property="id" column="author_id" />
+		<result property="username" column="author_username" />
+		<result property="password" column="author_password" />
+		<result property="email" column="author_email" />
+		<result property="bio" column="author_bio"/>
+	</resultMap>
+	<resultMap id="blogResult" type="Blog">
+		<id property="id" column="blog_id" />
+		<result property="title" column="blog_title" />
+		<association property="author" column="blog_author_id" javaType="Author" resultMap="authorResult" />
+	</resultMap>
+	<select id="selectBlog" parameterType="int" resultMap="blogResult">
+		select
+		B.id as blog_id,
+		B.title as blog_title,
+		B.author_id as blog_author_id,
+		A.id as author_id,
+		A.username as author_username,
+		A.password as author_password,
+		A.email as author_email,
+		A.bio as author_bio
+		From Blog B
+		left outer join Author A on B.author_id = A.id
+		where B.id = #{id}
+	</select>
+
+
+	<!-- 一对多嵌套查询  -->
+	<resultMap id="blogResult" type="Blog">
+		<id property="id" column="t_id"/>
+		<result property="title" column="t_title" />
+		<!-- column字段所指定的值作为参数传给selectPostsForBlog方法,并将查询结果自动设置到property所指定的属性中 -->
+		<collection property="posts" column="t_id" ofType="Post" select="selectPostsForBlog" />
+	</resultMap>
+	<select id="selectBlog" parameterType="int" resultMap="blogResult">
+		select * from t_blog where t_id = #{id}
+	</select>
+	<select id="selectPostsForBlog" parameterType="int" resultType="Post">
+		select * from t_post where t_blog_id = #{id}
+	</select>
+
+	<!-- 一对多嵌套结果 -->
+	<resultMap id="postResult" type="Post">
+		<id property="id" column="post_id" />
+		<result property="subject" column="post_subject" />
+		<result property="body" column="post_body" />
+	</resultMap>
+	<resultMap id="blogResult" type="Blog">
+		<id property="id" column="blog_id" />
+		<result property="title" column="blog_title" />
+		<collection property="posts" ofType="Post" resultMap="postResult" />
+	</resultMap>
+	<select id="selectBlog" parameterType="int" resultMap="blogResult">
+		select
+		B.id as blog_id,
+		B.title as blog_title,
+		B.author_id as blog_author_id,
+		P.id as post_id,
+		P.subject as post_subject,
+		P.body as post_body,
+		from Blog B
+		left outer join Post P on B.id = P.blog_id
+		where B.id = #{id}
+	</select>
+
+	<!-- 鉴别器 -->
+	<resultMap id="personResult" type="Person">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<discriminator javaType="int" column="type">
+			<case value="1" resultType="FirstPerson" >
+				<result property="age" column="age"/>
+			</case>
+			<case value="2" resultType="SecondPerson" >
+				<result property="address" column="address"/>
+			</case>
+		</discriminator>
+	</resultMap>
+	
+
+
+	<!-- insert主键自动生成 -->
+	<insert id="insertAuthor" parameterType="domain.blog.Author" useGeneratedKeys="true" keyProperty="id">	
+		insert into Author
+			(username,password,email,bio)
+		values
+			(#{username},#{password},#{email},#{bio})
+	</insert>
+	
+	<!-- insert主键手动生成 -->
+	<insert id="insertAuthor" parameterType="domain.blog.Author">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">	
+			select CAST(RANDOM()*1000000 as INTEGER) a from SYSIBM.SYSDUMMY1
+		</selectKey>
+		insert into Author
+			(id, username, password, email,bio, favourite_section)
+		values
+			(#{id}, #{username}, #{password}, #{email}, #{bio}, #{favouriteSection,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- update -->
+	<update id="updateAuthor" parameterType="domain.blog.Author">
+		update Author 
+		set
+			username = #{username},
+			password = #{password},
+			email = #{email},
+			bio = #{bio}
+		where id = #{id}
+	</update>
+	
+	<!-- delete -->
+	<delete id="deleteAuthor" parameterType="int">
+		delete from Author where id = #{id}
+	</delete>
+
+
+
+	<sql id="userColumns">username,password,email,bio</sql> 
+	<include refid="userColumns"/>
+	
+	<if test="title != null and author != null"> ... </if> 
+	
+	<choose> 
+		<when test="..."> ... </when> 
+		<when test="..."> ... </when> 
+		<otherwise> ... </otherwise> 
+	</choose>
+	
+	<where>...</where>	select/update语句中的关键字 
+	<trim prefix="WHERE" prefixOverrides="AND|OR ">...</trim> 
+	
+	<set>...</set>	update语句中的关键字 
+	<trim prefix="SET" suffixOverrides=",">...</trim> 
+
+	<!-- 	集合（in）
+	Map<String, Object> qbuilder = new HashMap<String, Object>();
+	Collection<String> creditsTypes = new ArrayList<String>();
+	creditsTypes.add(CreditsLog.CREDITSTYPE_ARTICLE_CN_ADD);
+	creditsTypes.add(CreditsLog.CREDITSTYPE_ARTICLE_CN_MODIFY);
+	qbuilder.put("creditsTypes", creditsTypes); -->
+	WHERE creditsType in
+	<foreach item="c" index="index" collection="qbuilder.creditsTypes" open="(" separator="," close=")">
+		#{c}
+	</foreach>
+
+</mapper>

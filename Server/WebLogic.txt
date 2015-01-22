@@ -1,0 +1,59 @@
+Hibernate与weblogic进行集成，解释HQL时会抛ClassNotFoundException：
+	1：拷贝antlr-2.7.6.jar包到WL_HOME/server/lib下面
+	2：修改user_projects/domains/base_domain/bin/setDomainEnv.cmd里的
+	   set PRE_CLASSPATH=%WL_HOME%\server\lib\antlr-2.7.6.jar
+
+设置数据库驱动
+	1：拷贝mysql-connector-java-3.1.13-bin.jar包到WL_HOME/server/lib下面
+	2：修改user_projects/domains/base_domain/bin/setDomainEnv.cmd里的
+	   set PRE_CLASSPATH=%WL_HOME%\server\lib\antlr-2.7.6.jar;%WL_HOME%\server\lib\mysql-connector-java-3.1.13-bin.jar
+
+配置weblogic的数据源：http://localhost:7001/console
+
+在hibernate中使用weblogic的数据源
+	1:取消hibernate原来的数据库连接配置
+	2:添加<property name="hibernate.connection.datasource">MySqlDs</property>
+	
+	
+	
+	
+
+1、	默认安装Weblogic90
+2、	配置weblogic domain – 通过weblogic配置向导进行配置
+3、	启动weblogic - user_projects\domains\base_domain\bin 目录下，运行startWeblogic.cmd
+4、	部署OA项目
+	a)	打包OA项目
+	b)	拷贝到自动发布目录
+	c)	OA项目是基于hibernate的项目，hibernate与weblogic进行集成的时候会有一些问题，即在解释HQL的时候，会出现类似下面的异常：ClassNotFoundException: org.hibernate.hql.ast.HqlToken [from com.bjsxt.oa.model.User where username = ?]
+	d)	解决的办法是：
+		i.	拷贝antlr-2.7.6.jar包到WL_HOME/server/lib下面
+		ii.	打开user_projects/domains/base_domain/bin目录下的setDomainEnv.cmd脚本
+		iii.	找到这样一行：set PRE_CLASSPATH=
+		iv.	修改为：set PRE_CLASSPATH=%WL_HOME%\server\lib\antlr-2.7.6.jar
+	e)	关闭weblogic(Ctrl + C)
+	f)	重新启动weblogic
+	g)	重新访问：http://localhost:7001/oa/即可
+5、	配置weblogic的数据源
+	a)	拷贝数据库驱动，如mysql-connector-java-3.1.13-bin.jar，到WL_HOME/server/lib下面
+	b)	打开user_projects/domains/base_domain/bin目录下的setDomainEnv.cmd脚本
+	c)	找到这样一行：set PRE_CLASSPATH=
+	d)	加上刚才的配置，这一行，应该修改为：set PRE_CLASSPATH=%WL_HOME%\server\lib\antlr-2.7.6.jar;%WL_HOME%\server\lib\mysql-connector-java-3.1.13-bin.jar
+	e)	关闭weblogic(Ctrl + C)
+	f)	重新启动weblogic
+	g)	配置weblogic的数据源
+		i.	访问http://localhost:7001/console，这个是weblogic的控制台，在控制台程序上可以配置各种应用，我们现在通过weblogic console配置数据源
+		ii.	输入在安装过程中设置的用户名和密码，登录控制台
+		iii.	点击 Lock & Edit按钮，以便控制台运行在修改模式下，我们才可以对它的配置做改动
+		iv.	点击Data Source连接，new一个数据源
+		v.	选择MySql作为我们的数据库，Jndi的名称比较关键，我们在程序里调用数据源时，就需要使用这个名称（假设配置JNDI名称为：MySqlDs）
+		vi.	注意Connection Properties配置的属性
+		vii.	我们可以选择测试连接的配置是否正确：Test Configuration
+		viii.	将数据源的配置部署到一个target server上：
+			1.	点击数据源名称，进入数据源的详细配置页面
+			2.	点击Targets标签页，选择AdminServer前面的checkbox，并点击save按钮
+			3.	激活数据源的配置：点击Activate Changes按钮
+6、	在hibernate中使用weblogic的数据源
+	a)	取消hibernate原来的数据库连接配置
+	b)	添加hibernate对数据源的配置：<property name="hibernate.connection.datasource">MySqlDs</property>
+	c)	重新打包OA项目
+	d)	重新部署OA项目：即将新打包的war文件直接覆盖原来的文件即可

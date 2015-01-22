@@ -1,0 +1,67 @@
+Ctrl+D: 删除当前行 
+Ctrl+Alt+↓ 复制当前行到下一行(复制增加)
+Ctrl+Alt+↑ 复制当前行到上一行(复制增加)
+Alt+↓ 当前行和下面一行交互位置(特别实用,可以省去先剪切,再粘贴了)
+Alt+↑ 当前行和上面一行交互位置(同上)
+Alt+← 前一个编辑的页面
+Alt+→ 下一个编辑的页面(当然是针对上面那条来说了)
+Shift+Enter 在当前行的下一行插入空行(这时鼠标可以在当前行的任一位置,不一定是最后)
+Shift+Ctrl+Enter 在当前行的上一行插入空行(这时鼠标可以在当前行的任一位置,不一定是最后)
+Ctrl+L 定位在某行 (对于程序超过100的人就有福音了)
+Ctrl+O 快速显示 OutLine
+Ctrl+N 新建 
+Ctrl+T 快速显示当前类的继承结构
+Ctrl+K 参照选中的Word快速定位到下一个
+Ctrl+Shift+K 参照选中的Word快速定位到上一个
+Ctrl+J 正向增量查找(按下Ctrl+J后,你所输入的每个字母编辑器都提供快速匹配定位到某个单词)
+Ctrl+Shift+J 反向增量查找(和上条相同,只不过是从后往前查)
+Ctrl+Shift+F4 关闭所有打开的Editer
+Ctrl+Shift+X 把当前选中的文本全部变味小写
+Ctrl+Shift+Y 把当前选中的文本全部变为小写
+Ctrl+Shift+S 全局 全部保存
+Alt+Shift+R 重命名（关联的一起重命名）
+
+【Ctrl+Shift+F】 格式化代码
+【Alt+Shift+R】 重命名
+【CTRL+SHIFT+X】 将选中字母变为大写 
+【CTRL+SHIFT+Y】 将选中字母变为小写
+
+全局 打开类型 Ctrl+Shift+T 
+全局 打开类型层次结构 F4 
+全局 打开外部javadoc Shift+F2 
+全局 在层次结构中打开类型 Ctrl+Shift+H 
+
+
+搜索
+全局 出现在文件中 Ctrl+Shift+U 
+全局 打开搜索对话框 Ctrl+H 
+全局 工作区中的声明 Ctrl+G 
+全局 工作区中的引用 Ctrl+Shift+G 
+
+
+
+运行
+作用域 功能 快捷键 
+全局 单步返回 F7 
+全局 单步跳过 F6 
+全局 单步跳入 F5 
+全局 单步跳入选择 Ctrl+F5 
+全局 调试上次启动 F11 
+全局 继续 F8 
+全局 使用过滤器单步执行 Shift+F5 
+全局 添加/去除断点 Ctrl+Shift+B 
+全局 显示 Ctrl+D 
+全局 运行上次启动 Ctrl+F11 
+全局 运行至行 Ctrl+R 
+全局 执行 Ctrl+U 
+
+
+重构
+作用域 功能 快捷键 
+全局 撤销重构 Alt+Shift+Z 
+全局 抽取方法 Alt+Shift+M 
+全局 抽取局部变量 Alt+Shift+L 
+全局 内联 Alt+Shift+I 
+全局 移动 Alt+Shift+V 
+全局 重命名 Alt+Shift+R 
+全局 重做 Alt+Shift+Y

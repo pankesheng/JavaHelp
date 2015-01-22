@@ -1,0 +1,53 @@
+<!DOCTYPE validators
+PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+"http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+	<field name="count">
+		<field-validator type="int" short-circuit="true">
+			<param name="min">1</param>
+			<param name="max">100</param>
+			<message key="invalid.count">
+				Value must be between ${min} and ${max}
+			</message>
+		</field-validator>
+	</field>
+	<field name="name">
+		<field-validator type="requiredstring">
+			<message>You must enter a name.</message>
+		</field-validator>
+	</field>
+	<validator type="expression" short-circuit="true">
+		<param name="expression">email.equals(email2)</param>
+		<message>Email not the same as email2</message>
+	</validator>
+</validators>
+<!-- 
+required
+确保该属性不是null
+requiredstring
+确保一个String类型的属性不是null，并且非空
+stringlength
+检查String的长度范围是否与所期望的一致
+int
+检查int类型的数字是否超出所期望的大小范围
+double
+检查double类型的数字是否超出所期望的大小范围
+date
+检查date类型的属性是否超出所期望的范围
+expression
+使用值栈来估算一个ONGL表达式（必须要返回boolean值）
+fieldexpression
+使用OGNL表达式来验证字段
+email
+保证该属性是一个有效的email地址
+url
+保证该属性是一个有效的URL
+conversion
+检查该属性是否有转换错误
+regex
+检查该属性的值是否与某个正则表达式相匹配。
+visitor
+可以把对字段的验证动作推迟到这个字段所属的类的特有的另一个验证文件中执行。
+比如说，你在使用模型驱动的action，在模型中有一个对应于Person类的“person”属性。
+如果该模型正在被多个Action使用，那么你大概就会想要把验证信息抽取出来进行重用。Visitor 验证提供了这样的功能
+ -->

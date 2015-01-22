@@ -1,0 +1,67 @@
+
+Linux
+	安装libevent
+		./configure --with-libevent=/usr
+		make && make install
+	安装memcached
+		./configure --with-libevent=/usr
+		make && make install
+		启动：memcached -d -m 128 -l 192.168.1.111 -p 11211 -u root
+		停止：killall memcached
+	设置防火墙
+		Iptables -A INPUT -P tcp -s 192.168.1.111 -dport 11211 -j ACCEPT
+		Iptables -A INPUT -P udp -s 192.168.1.111 -dport 11211 -j ACCEPT
+windows
+	1、安装memcached
+		1-1、安装服务：D:\software>memcached.exe -d install (会自动装成windows的服务)
+		1-2、启动服务：D:\software>memcached.exe -d start	
+			详细配置：D:\software>memcached.exe -d -m 50 -l 127.0.0.1 -p 11211 start
+				-p 监听的端口 
+				-l 连接的IP地址, 默认是本机 
+				-d start 启动memcached服务 
+				-d restart 重起memcached服务 
+				-d stop|shutdown 关闭正在运行的memcached服务 
+				-d install 安装memcached服务 
+				-d uninstall 卸载memcached服务 
+				-u 以的身份运行 (仅在以root运行的时候有效) 
+				-m 最大内存使用，单位MB。默认64MB 
+				-M 内存耗尽时返回错误，而不是删除项 
+				-c 最大同时连接数，默认是1024 
+				-f 块大小增长因子，默认是1.25 
+				-n 最小分配空间，key+value+flags默认是48 
+				-h 显示帮助
+		1-3、停水服务：D:\software>memcached.exe -d stop
+		1-4、卸载服务：D:\software>memcached.exe -d uninstall
+	2、进入memcached
+		2-1、...>telnet localhost 11211
+		2-2、set mystr1 1 50000 10	//定义变量mystr1=mymymymymy,下标为1,有效50000秒,长度10b
+			 mymymymymy
+			 get mystr1
+			 stats
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

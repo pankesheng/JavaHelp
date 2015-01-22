@@ -1,0 +1,29 @@
+
+struts2_3100_I18N_Test
+	1、i18n拦截器对名为“request_locale”的请求参数进行检查，并且把它保存到用户Session中。
+	
+	2、如何取国际化配置文件app_en_US.properties中的值
+	public static void main(String[] args) {
+		ResourceBundle res = ResourceBundle.getBundle("app", Locale.CHINA);
+		System.out.println(res.getString("welcome.msg" ));
+	}
+	
+	3、如何取HttpServletRequest对象的Session中用户Locale的值，如果为空，取客户端默认的语言
+	Object locale = ServletActionContext.getRequest().getSession().getAttribute("WW_TRANS_I18N_LOCALE");
+	String global = locale == null ? ServletActionContext.getRequest().getLocale().toString() : locale.toString();
+	
+	4、如何用Struts2标签取值
+	<s:set name="SESSION_I18N_LOCALE" value="#session['WW_TRANS_I18N_LOCALE']==null?locale.toString():#session['WW_TRANS_I18N_LOCALE'].toString()"/>
+	
+	5、如何切换语种
+	<form action="<s:url />" name="langForm">
+		<input type="hidden" id="request_locale" name="request_locale" value="<s:property value='#SESSION_I18N_LOCALE'/>"/>
+	</form>
+	
+	function langSelecter_onChanged(lang) {
+		if ($("#request_locale").val() != lang) {
+			$("#request_locale").val(lang);
+	        document.langForm.submit();
+		}
+    }
+	

@@ -1,0 +1,85 @@
+
+Maven安装
+
+	http://maven.apache.org/download.html
+	
+	M2_HOME
+	E:\JAVA\Software\apache-maven-3.0.3
+	
+	Path
+	...;%M2_HOME%\bin
+	
+	>mvn -v
+	
+	Eclipse Maven插件
+	http://m2eclipse.sonatype.org/sites/m2e
+	
+	Eclipse Maven其他插件
+	http://m2eclipse.sonatype.org/sites/m2e-extras/
+	
+	Eclipse Maven其他插件 异常 修改E:\JAVA\Software\eclipse\eclipse.ini
+	--launcher.XXMaxPermSize
+	256M
+	-vm
+	C:\Program Files\Java\jdk1.6.0_27\bin\javaw.exe
+	-wmargs
+	-Dosgi.requiredJavaVersion=1.5
+	-Xms128m
+	-Xmx256m
+	
+	修改Eclipse的默认Maven
+	Window--Preferences--Maven--Installations--Add--...
+
+Maven命令
+
+	项目文件夹 > mvn clean compile // 清理-编译到target文件夹
+	项目文件夹 > mvn clean package // 清理-编译-打包
+	项目文件夹 > mvn clean install // 清理-编译-打包-安装到本地仓库
+	项目文件夹 > mvn clean deploy // 清理-编译-打包-发布到私服
+	
+	clean生命周期包含三个阶段：
+		pre-clean、clean、post-clean
+	default生命周期包含很多阶段：
+		  validate
+		  generate-sources
+		  process-sources
+		  generate-resources
+		  process-resources     复制并处理资源文件，至目标目录，准备打包。
+		  compile     编译项目的源代码。
+		  process-classes
+		  generate-test-sources 
+		  process-test-sources 
+		  generate-test-resources
+		  process-test-resources     复制并处理资源文件，至目标测试目录。
+		  test-compile     编译测试源代码。
+		  process-test-classes
+		  test     使用合适的单元测试框架运行测试。这些测试代码不会被打包或部署。
+		  prepare-package
+		  package     接受编译好的代码，打包成可发布的格式，如 JAR 。
+		  pre-integration-test
+		  integration-test
+		  post-integration-test
+		  verify
+		  install     将包安装至本地仓库，以让其它项目依赖。
+		  deploy     将最终的包复制到远程的仓库，以让其它开发人员与项目共享。 
+	site生命周期包含四个阶段：
+		pre-site、site、post-site、site-deploy
+
+Maven Nexus安装（私服）
+
+	1、下载nexus，解压。
+	2、安装nexus到服务中：cmd ==> nexus目录 > nexus install
+	3、修改nexus-2.0.3\bin\jsw\conf\wrapper.conf文件的wrapper.java.command=D:\Java\jdk1.6.0_16\bin\java
+	4、启动nexus服务：cmd ==> nexus目录 > nexus start
+	5、访问jetty的私服：localhost:8081/nexus/index.html	(账号：admin；密码：admin123)
+	6、...
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

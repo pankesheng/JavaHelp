@@ -1,0 +1,56 @@
+DWR的基本使用：
+
+1、拷贝dwr.jar文件
+2、修改web.xml文件，添加dwr servlet配置：
+  <servlet>
+    <servlet-name>dwr-invoker</servlet-name>
+    <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dwr-invoker</servlet-name>
+    <url-pattern>/dwr/*</url-pattern>
+  </servlet-mapping> 
+3、在web-inf下面添加dwr.xml配置文件：
+	<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr/dwr20.dtd">
+	<dwr>
+	  <allow>
+	    <create creator="spring" javascript="T1">
+	      <param name="beanName" value="imgDao"/> 
+	    </create>
+	    <create creator="spring" javascript="T2">
+	      <param name="beanName" value="videoDao"/> 
+	    </create>
+	    <create creator="spring" javascript="T3">
+	      <param name="beanName" value="userDao"/> 
+	    </create>
+	    <create javascript="T4" creator="spring">
+	      <param name="beanName" value="productDao"/>
+	    </create>
+	  </allow>
+	</dwr>
+4、创建页面
+需引入以下javascript：
+
+<script type="text/javascript" src="dwr/engine.js"></script>
+<script type="text/javascript" src="dwr/util.js"></script>
+<script type="text/javascript" src="dwr/interface/test.js"></script>
+
+<script type="text/javascript">
+	function getProductRNumber() {
+		var productId = document.getElementById("product").value;
+		var pNumber = document.getElementById("pNumber").value;
+		dwr.engine.setAsync(false);//设置为同步方式
+		T4.getProductRNumber(productId, pNumber,
+			function(data){
+				var rNumber = document.getElementById("rNumber");
+				rNumber.innerHTML = data;
+				rNumber.style.color = "red";
+			}
+		);
+	}
+</script>

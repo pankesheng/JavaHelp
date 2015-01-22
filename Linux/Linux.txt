@@ -1,0 +1,140 @@
+hda3	第一个(a)IDE硬盘(hd)上的第三个(3)主分区或扩展分区
+sdb6	第二个(b)SCSI硬盘(sd)上的第二个(6;逻辑分区从5开始)逻辑分区
+
+/分区
+SWAP分区
+/boot	Linux的内核及引导系统程序所需要的文件
+/dev	设备文件存储目录，如声卡，磁盘
+/etc	系统配置文件的所在地，如帐号密码配置文件，服务器配置文件
+
+# cd /dev	//进入/dev目录
+# cd ..		//进入上一层
+# ls		//查询本目录下的所有文件
+# pwd		//查看当前路径
+# man showdown	//显示showdown的用法及详细信息
+# mkdir a1	//创建a1目录
+# rmdir a1	//删除a1空文件
+# rm -rf a1	//删除a1文件及里面全部文件
+# cp [-r] a1 a2	//在同目录下拷贝文件a1成a2
+# mv a1 ../	//移动a1到上一级目录
+# vi 1.txt	//创建(编辑)文件1.txt
+# more 1.txt	//查看文件1.txt
+# head -3 1.txt	//查看文件1.txt的最前三行内容
+# tail -3 1.txt	//查看文件1.txt的最后三行内容
+# find /目录 -name 关键字	//查找文件
+# grep abcd 1.txt		//查找文件1.txt中关键字为abcd的一行
+# ln 1.txt 3	//给1.txt文件创建硬链接，复制一份再创建快捷方式
+# ln -s 1.txt 4	//给1.txt文件创建软链接，相当于创建快捷方式
+# 命令 | more	//管道：命令的结果分页显示
+# mv apache-tomcat-5.5.25 tomcat5	//重命名文件名
+
+# wall 文字		//文字显示在连接上的所有用户的屏幕上
+# wall `data`		//data运行后的结果显示在连接上的所有用户的屏幕上
+# ls > cmd.txt		//ls运行后的结果记录到cmd.txt文件中(覆盖原来的内容)
+# ls >> cmd.txt		//ls运行后的结果记录到cmd.txt文件中(添加到原来内容后面)
+# lsss 2> cmd.txt	//lsss命令错误时把错误信息记录到cmd.txt文件中
+# wall < aa.txt		//读取aa.txt中的内容显示在连接上的所有用户的屏幕上
+
+
+
+用户增删改
+	# useradd 用户名	//添加用户
+	# userdel 用户名	//删除用户
+	# rm -rf 用户名		//删除用户名命名的文件
+	# su 用户名		//切换用户
+
+文件详细信息解析
+	# ls -l		//查询文件的详细信息
+	-rwxr--r-- 1 root root 56 Jun 23 12:44 4.txt
+	lrwxrwxrwx 1 root root  5 Jun 23 12:45 5 ->3.txt
+	drwxr-xr-x 4 root root 34 Jun 23 12:46 a1
+	第1位：-:文件 l:不存在 d:文件夹
+	第2-4位：文件所有者对此文件的权限
+	第5-7位：文件所有者同组的用户对此文件的权限
+	第8-10位：其他用户对此文件的权限
+	r:读 w:写 x:执行 -:无
+	# chmod 755 4.txt	//修改4.txt的权限;-rwxr-xr-x 1 root root 56 Jun 23 12:44 4.txt;755=111101101=rwxr-xr-x
+	# chown testuser 4.txt	//修改4.txt的拥有者;-rwxr-xr-x 1 testuser root 56 Jun 23 12:44 4.txt
+
+运行光驱
+	# mount /dev/cdrom /mnt/cdr
+	# cd /mnt/cdr	打开光驱
+	# umount /dev/cdrom
+
+Linux启动步骤
+	1：load bios(hardware information)
+	2：read MBR's config to find out the OS
+	3：load the kernel of the OS
+	4：init process starts...
+	5：execute /etc/rc.d/sysinit
+	6：start other modules(etc/modules.conf)
+	7：execute the run level scripts	//启动默认启动级别，文件:/etc/rc.d/rc.sysinit
+		/*--------设置ftp随启动级别启动---------------------------------------------*/
+		# chkconfig --list | grep vsftpd	//查看ftp在默认启动级别中的信息
+		vsftpd	0:off	1:off	2:off	3:off	4:off	5:off	6:off	//显示的结果
+		# chkconfig vsftpd on			//修改ftp在默认启动级别中的信息
+		/*--------------------------------------------------------------------------*/
+	8：execute /etc/rc.d/rc.local		//启动自启动程序
+	9：execute /bin/login
+	10：shell started...
+	
+Ubuntu 14.04
+	显示隐藏的文件
+		Ctrl+H
+	进入root权限
+		sudo -s
+	启动root账号
+		sudo passwd root
+	账号设置：
+		gedit /etc/lightdm/lightdm.conf
+			[SeatDefaultd]
+			autologin-guest=false
+			autologin-user=zzz
+			autologin-user-timeout=2
+			autologin-session=lightdm-autologin
+			user-session=ubuntu
+			greeter-session=unity-greeter
+			greeter-show-manual-login=true
+	环境变量文件
+		/etc/profile
+	自启动文件
+		/etc/rc.local
+	任务管理软件
+		安装：
+			sudo apt-get install sysv-rc-conf
+		启动：
+			sudo sysv-rc-conf
+		设置为服务：
+			1、拷贝文件到/etc/init.d/下，不需要后缀
+			2、sudo chmod 755 /etc/init.d/tomcat7
+			3、sudo /etc/init.d/tomcat7 start|stop|restart
+	
+	JDK7.0
+		/etc/profile文件底部添加：
+			export JAVA_HOME=/usr/java/jdk1.7.0_65
+			export JRE_HOME=${JAVA_HOME}/jre
+			export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+			export PATH=${JAVA_HOME}/bin:$PATH
+		
+	Tomcat7
+		(运行)：
+			cd /usr/java/apache-tomcat-7.0.54/bin
+			./startup.sh
+		(进程)：
+			ps -ef | grep tomcat
+				// root 3364 1 0 14:39 ......//3364是进程的ID
+			kill 3364
+		(开机启动)：
+			1、拷贝catalina.sh到/etc/init.d/下，更名为tomcat7(不带后缀)
+			2、在文件tomcat7中加入：
+				JAVA_HOME=/usr/java/jdk1.7.0_65
+				CATALINA_HOME=/usr/java/apache-tomcat-7.0.54
+			3、设置为可运行：
+				sudo chmod 755 /etc/init.d/tomcat7
+			4、设置开机启动：
+				sudo sysv-rc-conf
+				2-5：Y
+			
+			
+			
+			

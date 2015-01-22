@@ -1,0 +1,10 @@
+
+JDK
+	JAVA_HOME
+		C:\Program Files (x86)\Java\jdk1.6.0_39
+	CLASSPATH
+		.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar;
+	Path
+		;%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
+		
+			

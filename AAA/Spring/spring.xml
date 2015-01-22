@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+
+<!-- SpEL -->
+	<bean id="my" class="">
+		<property name="randomNumber" value="#{ T(java.lang.Math).random() * 100 }"/>
+		<property name="userRegion" value="#{ systemProperties['user.country'] }"/>
+		<property name="defaultLocale" value="#{ systemProperties['user.region'] }"/>
+	</bean>
+	<bean id="my2" class="">
+		<property name="myLocale" value="#{ my.defaultLocale }"/>
+	</bean>
+
+
+<!-- bean赋值：String、int、""、null、Set、List、Map、Properties -->
+	<bean id="userDAO" class="com.bjsxt.dao.impl.UserDAOImpl">
+		<!-- int -->
+		<property name="daoId" value="8" />
+		<!-- String -->
+		<property name="daoStatus" value="good" />
+		<!-- "" -->
+		<property name="email" value=""/>
+		<!-- null -->
+		<property name="email"><null/></property>
+		<!-- Set -->
+		<property name="sets">
+			<set>
+				<value>1</value>
+				<value>2</value>
+			</set>
+		</property>
+		<!-- List -->
+		<property name="lists">
+			<list>
+				<value>1</value>
+				<value>2</value>
+				<value>3</value>
+			</list>
+		</property>
+		<!-- Map -->
+		<property name="maps">
+			<map>
+				<entry key="1" value="1"/>
+				<entry key="2" value="2"/>
+				<entry key="3" value="3"/>
+				<entry key="4" value="4"/>
+			</map>
+		</property>
+		<!-- Properties -->
+		<property name="adminEmails">
+			<props>
+				<prop key="administrator">administrator@example.org</prop>
+				<prop key="support">support@example.org</prop>
+				<prop key="development">development@example.org</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+<!-- bean继承 -->
+	<bean id="parent" abstract="true" class="example.ComplexObject">
+		<property name="adminEmails">
+			<props>
+				<prop key="administrator">administrator@example.com</prop>
+				<prop key="support">support@example.com</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="child" parent="parent">
+		<property name="adminEmails">
+			<!-- merge="true"表示合并且覆盖 -->
+			<props merge="true">
+				<prop key="sales">sales@example.com</prop>
+				<prop key="support">support@example.co.uk</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+<!-- 
+	depends-on="myFirstDao,mySecondDao"	| 表示初始化此bean之前要先初始化myFirstDao和mySecondDao两个bean,同时控制关闭顺序
+	lazy-init="true"  |	表示在第一次请求的时候才初始化
+	autowire="byName" |	no：默认、不进行自动加载、推荐使用默认值不要自动加载
+						byName：根据属性名称自动加载bean
+						byType：根据属性类型自动加载bean
+						constructor：类似于byType，但适用于构造函数的参数
+	scope="prototype" |	singleton：默认、Spring容器只存在一个共享的bean实例、用户无状态的bean
+						prototype：每次对bean的请求都会创建一个新的bean实例、用于有状态的bean
+						request：一个HTTP请求一个bean实例
+						session：一个HTTP的session一个bean实例
+						global session：通常只有在portlet中使用
+	init-method="init" | UserService.java里存在init()方法，在初始化的时候调用
+	destroy-method="destroy" | UserService.java里存在destroy()方法，在结束的时候调用
+-->
+	<bean id="userService" class="com.bjsxt.service.UserService" 
+			lazy-init="true" autowire="byName" scope="prototype"
+			init-method="init" destroy-method="destroy">
+		<property name="userDAO" ref="userDAO"/>
+	</bean>
+
+
+</beans>

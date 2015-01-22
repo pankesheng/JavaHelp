@@ -1,0 +1,129 @@
+<html>
+<head>
+<!-- 即应当以全屏模式显示该地图，且用户不能调整地图尺寸。 -->
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<!-- sensor：以指明此应用程序是否使用传感器确定用户的位置。 -->
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=cn"></script>
+<script type="text/javascript">
+	var map;
+	var geocoder;
+	function initialize() {
+		geocoder = new google.maps.Geocoder();
+		var myOptions = {
+			zoom: 4,
+			center: new google.maps.LatLng(26.87702, 100.23039),
+			
+			/*//系统控件的显示控制,包括样式和位置的控制,详见API
+			disableDefaultUI: true,//取消所有默认控件
+			navigationControl: true,//导航(移动+缩放等级)
+			panControl: false,//导航(移动)控件
+			zoomControl: false,//导航(缩放级别)控件
+			mapTypeControl: true,//地图类型
+			scaleControl: true,//比例
+			streetViewControl: true,*/
+			
+			/*//设置地图的默认显示类型
+			ROADMAP：用于显示二维图块。
+			SATELLITE：用于显示卫星地图。
+			TERRAIN：用于显示二维地图+地形。
+			HYBRID：用于显示卫星地图+地名。*/
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		
+		/*//添加一个标记
+		var marker = new google.maps.Marker({
+        	title: 'Click to zoom',
+        	position: map.getCenter()
+        });
+        marker.setMap(map);//显示
+        marker.setMap(null);//隐藏 */
+        
+        /*//添加一个折线
+        var points = [
+        	new google.maps.LatLng(37.772323, -122.214897),
+        	new google.maps.LatLng(21.291982, -157.821856),
+        	new google.maps.LatLng(-18.142599, 178.431),
+        	new google.maps.LatLng(-27.46758, 153.027892)
+        ];
+        var polyline = new google.maps.Polyline({
+        	path: points,
+        	strokeColor: "#FF0000",
+        	strokeOpacity: 1.0,
+        	strokeWeight: 2,
+        	map: map
+        }); */
+        
+        
+        /*//添加一个信息框
+        var infowindow = new google.maps.InfoWindow({
+       		content: "test",
+       		position: marker.getPosition()
+       	});
+       	infowindow.open(map); */
+        
+        /*//添加事件
+        google.maps.event.addListener(map, 'click', function(a) {alert(a.latLng);});
+        google.maps.event.addListener(map, 'zoom_changed', function() {alert("zoom is changed");}); 
+        google.maps.event.addListener(marker, 'click', function() {alert("marker is clicked");});*/
+        
+        /*//添加控件_1/2:(定位自定义控件)
+        var homeControlDiv = document.createElement('DIV');
+		var homeControl = new HomeControl(homeControlDiv, map);
+		homeControlDiv.index = 1;
+		map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);*/
+        
+	}
+	
+	/*//添加控件_2/2:(绘制自定义控件+处理自定义控件的事件)
+	function HomeControl(controlDiv, map) {
+		controlDiv.style.padding = '5px';
+		
+		var controlUI = document.createElement('DIV');
+		controlUI.style.backgroundColor = 'white';
+		controlUI.style.borderStyle = 'solid';
+		controlUI.style.borderWidth = '2px';
+		controlUI.style.cursor = 'pointer';
+		controlUI.style.textAlign = 'center';
+		controlUI.title = 'Click to set the map to Home';
+		controlDiv.appendChild(controlUI);
+		
+		var controlText = document.createElement('DIV');
+		controlText.style.fontFamily = 'Arial,sans-serif';
+		controlText.style.fontSize = '12px';
+		controlText.style.paddingLeft = '4px';
+		controlText.style.paddingRight = '4px';
+		controlText.innerHTML = '<b>Home</b>';
+		controlUI.appendChild(controlText);
+		
+		google.maps.event.addDomListener(controlUI, 'click', function() {
+			map.setCenter(new google.maps.LatLng(-34.397, 150.644))
+		});
+	}*/
+	
+	function codeAddress() {
+	   var address = document.getElementById("address").value;
+	   geocoder.geocode( { 'address': address}, function(results, status) {
+	     if (status == google.maps.GeocoderStatus.OK) {
+	       map.setCenter(results[0].geometry.location);
+	       alert(results[0].geometry.location);
+	       var marker = new google.maps.Marker({
+	           map: map,
+	           position: results[0].geometry.location
+	       });
+	     } else {
+	       alert("Geocode was not successful for the following reason: " + status);
+	     }
+	   });
+	}
+</script>
+</head>
+<body onload="initialize()">
+	<div id="map_canvas" style="width:100%; height:100%"></div>
+	
+	<div>
+		<input id="address" type="textbox" value="Sydney, NSW">
+	    <input type="button" value="Encode" onclick="codeAddress()">
+	</div>
+</body>
+</html>
