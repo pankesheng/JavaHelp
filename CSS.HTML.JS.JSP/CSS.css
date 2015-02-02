@@ -2,11 +2,6 @@
 @CHARSET "GBK";
 
 #myId {
-	display: none; /* 隐藏myId域 */
-	display: block; /* 显示myId域 */
-}
-
-#myId {
 	cursor: pointer; /* 鼠标变手型 */
 	cursor: wait; /* 数遍变等待型 */
 }
@@ -14,14 +9,152 @@
 /* 截过长文字，在后面加... */
 #divId {
 	width: 100px;
-	white-space:nowrap;
+	white-space: nowrap;
 	overflow: hidden;
-	text-overflow:ellipsis;
+	text-overflow: ellipsis;
 }
 
-/* td不换行：
- * <td style="white-space:nowrap">姓名</td> */
+a[href][title] {
+	color:red;
+}
+
+a[href="#"][title="W3School"] {
+	color: red;
+}
 
 @import url("/css/global.css");
 
-/* 内容(content)、填充(padding)、边框(border)、边界(margin) */
+/* 内容(content)、内边距(padding)、边框(border)、外边距(margin) */
+
+body {
+	
+	/* 内边距 */
+	padding: 20px;	/* 内间距 */
+	padding: 10px 0.25em 2ex 20%;	/* 上、右、下、左的内间距 */
+	padding-top: 10%;	/* 上内间距是内容width的10%(上、右、下、左都按width算) */
+	
+	/* 外边距 */
+	margin: 1px;	/* 外边距 */
+	
+	/* 边框：简写 */
+	border: 1px solid blue;	/* 1像素的蓝色直线边框 */
+	
+	/* 边框：分开写 */
+	border-style: outset;	/* 凸起边框 */
+	border-style: solid dotted dashed double;	/* 实线上边框、点线右边框、虚线下边框、双线左边框、none(无边框) */
+	border-width: 5px;	/* 边框宽度 */
+	border-color: black;	/* 边框颜色：black、#909090、transparent(透明) */
+	border-top-style: double;	/* 设置上边框的样式 */
+	
+	/* 背景属性：分开写 */
+	background-attachment: fixed;	/* 图片是否随滚动条滚动： scroll(默认滚动)、fixed(不滚动) */
+	background-color: gray;
+	background-image: url(/i/eg_bg_04.gif);
+	background-position: top;	/* 图片起始位置：(top right)、(66% 33%)、(50px 100px) */
+	background-repeat: no-repeat;	/* 图片重复方案：默认(都平铺)、no-repeat(不平铺)、repeat-x(水平平铺)、repeat-y(垂直平铺) */
+	
+	/* 背景属性：简写 */
+	background: gray url(/i/eg_bg_04.gif) no-repeat fixed top;
+	
+	/* 文本属性 */
+	color: #00ff00;	/* 文本颜色：red、#00ff00、rgb(0,0,255) */
+	letter-spacing: 20px;	/* 字母间距 */
+	line-height: 120%;	/* 行间距：2、120%、30px */
+	text-align: left;	/* 对齐方式 */
+	text-decoration: none;	/* 划线配置：none(无,大部分标签默认)、underline(下划线,a标签默认)、overline(上划线)、line-through(中划线)、blink(闪烁) */
+	text-indent: 2em;	/* 首行缩进两个字体 */
+	text-transform: uppercase;	/* 修改大小写：none(默认不处理)、uppercase(全大写)、lowercase(全小写)、capitalize(首字母大写) */
+	white-space: nowrap;	/* 空格处理：normal(默认 丢掉多余的空格和换行)、nowrap(防止换行，除br元素) */
+	word-spacing: 30px;	/* 字间距 */
+	
+	/* 字体属性：分开写 */
+	font-family: arial,sans-serif;	/* 字体 */
+	font-size: 14px;	/* 字体大小(使用em单位解决IE下字体无法调整问题，父元素使用百分比解决IE兼容性) */
+	font-style: normal;	/* 字体风格：normal(正常显示)、italic(斜体显示)、oblique(倾斜显示) */
+	font-weight: bold;	/* 字体加粗：100~900为9级加粗度，400=normal，700=bold */
+	
+	/* 字体属性：简写 */
+	font: italic bold 12px/30px arial,sans-serif;
+	
+	/* 边框属性 */
+	outline-style: dotted;	/* 边框样式：dotted(点线);dashed(虚线);solid(实线);double(双实线);... */
+	outline-width: 1px;	/* 边框宽度 */
+	
+	overflow: scroll;	/* visible(默认无滚动条，内容多时会溢出)、auto(内容多时显示滚动条，内容少时无滚动条)、scroll(显示滚动条)、hidden(无滚动条，多余内容隐藏) */
+	position: absolute;	/* 定位方式：static(默认定位)、absolute(绝对定位:相对于包含块的定位，所占空间消失)、relative(相对定位:相对于原位置的偏移，所占空间不变)、fixed(固定定位) */
+	z-index: -1;	/* 设置堆叠顺序，多用于absolute定位中，默认是0. */
+	float: left;	/* 设置浮动 */
+	clear: both;	/* 设置一个元素的侧面是否允许其他的浮动元素：left、right、both、none */
+	
+	display: block;	/* 设置是否及如何显示元素：inline(内联元素/行内元素)、block(块级元素)、none(隐藏) */
+	visibility: visible;	/* 设置元素是否可见或不可见：visible(可见)、hidden(不可见) */
+}
+
+/* 列表 */
+ul {
+	list-style-type: none;	/* 清除列表项标记 */
+	list-style-image: url('/i/eg_arrow.gif');	/* 设置标志图片 */
+}
+
+/* 表格 */
+table {
+	border: 1px solid blue;	/* 1像素的蓝色直线边框 */
+	border-collapse: collapse;	/* 设置是否将表格边框折叠为单一边框 */
+	text-align: right;	/* 水平对齐方式 */
+	vertical-align: bottom;	/* 垂直对齐方式 */
+	padding: 20px;	/* 内间距 */
+}
+
+/* 链接：配置顺序不可变 */
+a:link {color:#FF0000;}		/* 未被访问的链接 */
+a:visited {color:#00FF00;}	/* 已被访问的链接 */
+a:hover {color:#FF00FF;}	/* 鼠标指针移动到链接上 */
+a:active {color:#0000FF;}	/* 正在被点击的链接 */
+
+/* 伪类、伪元素 */
+input:focus {}  /* 向拥有键盘输入焦点的元素添加样式。 */
+ui:first-child {} /* 向元素的第一个子元素添加样式。 */
+ui:lang {} /* 向带有指定 lang 属性的元素添加样式。 */
+p:first-letter {} /* 向文本的第一个字母添加特殊样式。 */
+p:first-line {} /* 向文本的首行添加特殊样式。 */
+
+/* 改变图片透明度，可应用到img或div标签上 */
+img {
+	opacity: 0.4;
+	filter: alpha(opacity=40); /* 针对 IE8 以及更早的版本 */
+}
+img:hover {
+	opacity: 1.0;
+	filter: alpha(opacity=100); /* 针对 IE8 以及更早的版本 */
+}
+
+/* 按钮实例 */
+a:link,a:visited {
+	display: block;
+	font-weight: bold;
+	font-size: 14px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+	background-color: #98bf21;
+	width: 120px;
+	text-align: center;
+	padding: 4px;
+	text-decoration: none;
+}
+a:hover,a:active {
+	background-color: #7A991A;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
