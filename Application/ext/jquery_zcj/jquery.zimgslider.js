@@ -62,42 +62,60 @@
 	}
 	
 	/** 获取已经上传的图片的可访问地址字符串（多张图片地址用','隔开），用于保存到数据库 */
-	$.fn.zImgslider_getImgUrls = function() {
-		return $("#addOrModify_imgs img").map(
-				function() {return $(this).attr("src");}
+	$.fn.zImgslider_getImgUrls = function(basePath) {
+		var t = "#" + $(this).attr("id") + " img";
+		return $(t).map(
+				function() {
+					var src = $(this).attr("srctemp");
+					if (basePath && basePath != '' && src && src != '') {
+						return src.replace(basePath,"");
+					} else {
+						return src;
+					}
+				}
 		).get().join(",");
 	};
 	
 	/** 初始化渲染图片(如果只用于显示，则不用传modify参数) */
-	$.fn.zImgslider_init = function(imgs,modify) {
-		$("#addOrModify_imgs").addClass("playPhoto").append("<ul></ul>");
-		$("#addOrModify_imgs ul").empty();
-		$("#addOrModify_imgs ol").remove();
-		if (imgs == null || imgs == "") {return;}
-		var values = imgs.split(",");
-		for (var i=0; i<values.length; i++) {
-			addPhoto("addOrModify_imgs",values[i],"","",modify);
+	$.fn.zImgslider_init = function(basePath, imgs, modify) {
+		var imgId = $(this).attr("id");
+		$("#"+imgId).addClass("playPhoto").append("<ul></ul>");
+		$("#"+imgId+" ul").empty();
+		$("#"+imgId+" ol").remove();
+		if (imgs == null || imgs == "") {
+			$("#"+imgId).hide();
+			return;
+		} else {
+			var values = imgs.split(",");
+			for (var i=0; i<values.length; i++) {
+				addPhoto(imgId,basePath+values[i],"","",modify);
+			}
 		}
 	};
 	
-	/** 添加一张图片 */
-	$.fn.zImgslider_addImg = function(img,count) {
-		if(count && $("#addOrModify_imgs > ul:first > li").size() >= count) {
+	/** 添加一张图片(如果新上传的图片覆盖前面的，则count传入1；如果限定指定张数，则count传入允许的数量) */
+	$.fn.zImgslider_addImg = function(basePath, img, count) {
+		var imgId = $(this).attr("id");
+		if (count && count==1) {// 只能上传一张
+			$("#"+imgId+" > ul:first > li").remove();
+			addPhoto(imgId,basePath+img,"","",true);
+		} else if(count && $("#"+imgId+" > ul:first > li").size() >= count) {// 只能上传指定张数
 			alert("照片数过多,请删除后再试!");
 		} else {
-			addPhoto("addOrModify_imgs",img,"","",true);
+			addPhoto(imgId,basePath+img,"","",true);
 		}
 		return;
 	};
 	
 	function addPhoto(d,url,title,size,modify){ //上传照片
-		var imgHtml = "<li>"+"<a href='"+url+"' target='_blank' title='点击查看原图'><img src='"+url+"' title='点击查看原图' /></a>"+"</li>";
-		$("#addOrModify_imgs > ul:first").append(imgHtml);
+		var imgHtml = "<li>"+"<a href='"+url+"' target='_blank' title='点击查看原图'><img srctemp='"+url+"' src='"+url+"' title='点击查看原图' /></a>"+"</li>";
+		$("#"+d+" > ul:first").append(imgHtml);
+		$("#"+d).show();
 		playPhoto(d,modify);
 	}
 
 	function delPhoto(d,i){ //删除图片
-		$("#addOrModify_imgs > ul:first > li:eq("+i+")").remove();
+		$("#"+d+" > ul:first > li:eq("+i+")").remove();
 		playPhoto(d,true);
 	}
 
