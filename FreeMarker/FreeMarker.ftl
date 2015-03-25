@@ -124,8 +124,12 @@ ${stack.findValue("@com.xt.poh.entity.User@ROLE_ADMIN")}	<#-- 访问静态 -->
 		id不存在时执行：错误:${.error}
 	</#attempt>
 	
-	
-	
+<#-- 全局处理 -->
+<#escape abc as abc?html>
+...
+<#noescape>...</#noescape>
+...
+</#escape>
 	
 	
 
