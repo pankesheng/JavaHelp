@@ -223,6 +223,12 @@ FROM `t_creditslog` k
 WHERE creditsUser='1539ba717dff43d09d15c6c34c2536ee';
 
 
+-- 升序并且NULL排在最后
+	-- Sqlserver 和 MySql 认为NULL最小
+		ORDER BY CASE WHEN realname IS NULL THEN 1 ELSE 0 END,realname
+	-- Oracle认为NULL最大
+		ORDER BY realname NULLS FIRST
+
 -- 拷贝zaasmis数据库里的表dbo.RYK_RYJBXX到另一个数据库zcjtest里，拷贝后需重新设置主键和标识
 select * 
 into zcjtest.dbo.RYK_RYJBXX
