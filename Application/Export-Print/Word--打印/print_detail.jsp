@@ -19,10 +19,14 @@ $(document).ready(function(){window.print();});
 	2、使用office word打开，另存为“筛选过的网页(*.htm;*.html)”
 	3、用记事本打开*.htm，拷贝内容到*.jsp里（包括style和body）
 	4、在该分页的地方添加：<P class=normal style="PAGE-BREAK-BEFORE: always">&nbsp;</P>
+		>> 选择表格--表格属性--单元格--选项--去掉“自动换行”
+		>> 选择表格--居中
+		>> 选择表格--表格属性--指定宽度100%（或去掉指定宽度）
 	5、静态改为动态(图片使用<%=request.getContextPath()%><s:property value="obj.zp"/>替代)
 	6、JS里添加：$(document).ready(function(){window.print();});
 	7、请求打印的页面添加：
 		function _print() {
 			window.open("<%=request.getContextPath() %>/2027?id=<s:property value="obj.id"/>");
 		}
+		
  --%>
