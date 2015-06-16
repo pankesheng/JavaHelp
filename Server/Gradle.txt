@@ -1,0 +1,7 @@
+
+GRADLE_HOME
+D:\JAVA\Software\gradle-2.4
+
+Path
+;%GRADLE_HOME%\bin
+
