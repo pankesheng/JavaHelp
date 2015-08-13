@@ -203,6 +203,12 @@ MySql
 	FROM t_backbone
 	GROUP BY dw
 	
+	-- 查询附近的记录($lng是你的经度，$lat是你的纬度)
+	SELECT lng,lat,
+        (POWER(MOD(ABS(lng - $lng),360),2) + POWER(ABS(lat - $lat),2)) AS distance
+    FROM `user_location`
+    ORDER BY distance LIMIT 100
+	
 -- 1、通过customer分组
 -- 2、显示每个customer的orderprice总和
 -- 3、显示orderprice总和小于2000的记录
