@@ -1,36 +1,36 @@
-XML:һ��ͨ�õ����ݽ�����ʽ���洢������Ϣ���ļ���
-����
+XML:一种通用的数据交换格式，存储配置信息的文件。
+例：
 	<?xml version="1.0" encoding="GB2312" standlone="yes" ?>
-	<?xml-stylesheet type="text/css" href="a.css" ?>	//��ѡ������ָ��(pi):��������XML�ĵ���Ӧ�ó����ṩ��ʾ��Ϣ��
+	<?xml-stylesheet type="text/css" href="a.css" ?>	//可选，处理指令(pi):用来处理XML文档的应用程序提供提示信息。
 	......
-	������ţ�
-	<![CDATA[��������]]>
-	&��ʾΪ&amp;  <��ʾΪ&lt;  >��ʾΪ%gt;  "��ʾΪ->&quot;  '��ʾΪ->&apos;
+	特殊符号：
+	<![CDATA[特殊内容]]>
+	&表示为&amp;  <表示为&lt;  >表示为%gt;  "表示为->&quot;  '表示为->&apos;
 
-DTD:document type definition:�ʵ����Ͷ��壬һ��XML��Լ��ģʽ���ԣ�ָ��XML�ĵ��������淶��
-����
+DTD:document type definition:问档类型定义，一种XML的约束模式语言，指定XML文档的命名规范。
+例：
 	a.xml:
 		<?xml version="1.0" encoding="GB2312" standlone="no" ?>
-		<!DOCTYPE ��� SYSTEM "b.dtd">��<!DOCTYPE ��� PUBLIC "DTD����" "http://....../web.dtd">
-		<���>
+		<!DOCTYPE 书架 SYSTEM "b.dtd">或<!DOCTYPE 书架 PUBLIC "DTD名称" "http://....../web.dtd">
+		<书架>
 		  ......
-		</���>
+		</书架>
     b.dtd:
-		<!ELEMENT ���(��+)>
-		<!ELEMENT ��(����,�۸�)>//��,�Ļ����Ծ�Ҫ��ѭ������
+		<!ELEMENT 书架(书+)>
+		<!ELEMENT 书(书名,价格)>//有,的话属性就要按循序排序
 		......
 ......
 
-XML Schema:������DTD��һ��XML��Լ��ģʽ���ԣ�����XML�﷨�ṹ��
-����
+XML Schema:类似于DTD，一种XML的约束模式语言，符合XML语法结构。
+例：
 	a.xml:	
 		<?xml version="1.0" encoding="GB2312"?>
-		<��� xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="c.xsd">
+		<书架 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="c.xsd">
 		  ......
-		</���>
+		</书架>
     c.xsd:
 		<?xml version="1.0" encoding="GB2312"?>
 		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-		  <xs:element name="���">
+		  <xs:element name="书架">
 		    ......
 ......

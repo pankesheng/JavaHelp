@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dou.book.data.XMapper">
 
+	<!-- 字符串比较要用对引号，and要小写 -->
+	<when test='orderby != null and orderby == "distance"'>
 
 	<!-- 一对一嵌套查询 -->
 	<resultMap id="blogResult" type="Blog">
