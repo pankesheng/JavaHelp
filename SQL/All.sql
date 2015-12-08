@@ -1,13 +1,13 @@
 -- 各数据库数据类型说明：http://www.w3school.com.cn/sql/sql_datatypes.asp
 
 
--- 查询数据库存表内不重复的记录
-select distinct c_name from t_person;
+-- 查询数据库表内不重复的记录
+SELECT DISTINCT c_name FROM t_person;
 
 -- 查询前10条记录(SQL Server)
-select top 10 * from t_person;
--- 查询前10%条记录
-select top 10 percent * from t_person;
+SELECT top 10 * FROM t_person;
+-- 查询前10%条记录(SQL Server)
+SELECT top 10 percent * FROM t_person;
 
 -- not like
 select * from t_person where c_name not like '%lon%';
@@ -101,22 +101,64 @@ alter table t_person drop column sex;
 alter table t_person alter column sex varchar(255);
 alter table t_person modify column sex varchar(255);-- mysql
 
--- index：索引创建和删除
--- unique index：唯一的索引意味着两个行不能拥有相同的索引值。
-create index index_person_idcode on t_person (id desc, code);
-create unique index index_person_idcode on t_person (id desc, code);
-alter table t_person add index index_person_code(code);-- MySQL
-alter table t_person drop index index_person_idcode;-- MySQL
-drop index index_person_idcode;-- IBM DB2 / Oracle
-drop index t_person.index_person_idcode;-- SQL Server
-drop index index_person_idcode on t_person;-- MS Access / Microsoft SQLJet
-show index from t_person; -- 查看索引
 
--- view：视图创建、修改和删除
-create or replace view view_name as select id,code from t_person where 1=1;
-select * from view_name;
-drop view view_name;
+-- 索引
 
+	-- index：索引创建和删除
+	-- unique index：唯一的索引意味着两个行不能拥有相同的索引值。
+	ALTER TABLE t_person ADD INDEX index_person_code(code);-- 创建索引（MySQL）
+	ALTER TABLE t_person ADD UNIQUE index_person_code(code);-- 创建唯一索引（MySQL）
+	ALTER TABLE t_person DROP INDEX index_person_idcode;-- 删除索引（MySQL）
+	
+	create index index_person_idcode on t_person (id desc, code);
+	create unique index index_person_idcode on t_person (id desc, code);
+	drop index index_person_idcode;-- IBM DB2 / Oracle
+	drop index t_person.index_person_idcode;-- SQL Server
+	drop index index_person_idcode on t_person;-- MySQL / MS Access / Microsoft SQLJet
+	
+	SHOW INDEX FROM t_person; -- 查看索引
+
+
+-- 视图
+
+	CREATE OR REPLACE VIEW view_name AS select id,code from t_person where 1=1;-- 创建视图
+	SELECT * FROM view_name;-- 使用视图
+	DROP VIEW view_name;-- 删除视图
+
+	
+-- 复制表
+
+	CREATE TABLE t2 LIKE t1;-- 复制表结构（MySQL）
+	INSERT INTO t2 SELECT * FROM t1;-- 复制表数据（用*的话必须两个表的结构一摸一样）（MySQL）
+	
+	-- 拷贝zaasmis数据库里的表dbo.RYK_RYJBXX到另一个数据库zcjtest里，拷贝后需重新设置主键和标识
+	select * into zcjtest.dbo.RYK_RYJBXX from zaasmis.dbo.RYK_RYJBXX;
+	-- 拷贝另一台数据库的表到本地数据库，拷贝后需重新设置主键和标识
+	select * into cw_zcgl from opendatasource('SQLOLEDB','Data Source=192.168.68.160;User ID=sa;Password=123456').zcjtest.dbo.cw_zcgl
+	-- 拷贝另一台数据库的表到本地数据库(自定义属性)，拷贝后需重新设置主键和标识
+	insert into cw_zcgl(ziclb,JILCJZ) select ziclb,JILCJZ from opendatasource('SQLOLEDB','Data Source=192.168.68.160;User ID=sa;Password=123456').zcjtest.dbo.cw_zcgl
+	-- 拷贝-相同服务器-不同数据库-不同表的数据，拷贝后需重新设置主键和标识
+	insert into cw_zcgl(kapbh,gudzcbh,gudzcmc) select kapbh,gudzcbh,gudzcmc from test.dbo.cw_zcgl
+	
+	
+-- 预处理【MySQL】
+
+	PREPARE s1 FROM 'select * from t1 where id > ?';-- 设置预处理语句
+	SET @i=1;-- 设置变量
+	EXECUTE s1 USING @i;-- 执行语句
+	DROP PREPARE s1;-- 废弃预处理
+	
+
+-- 事务【MySQL】【Innodb才支持】
+
+	SET AUTOCOMMIT=0;-- 关闭自动提交
+	delete from t1 where id = 11;
+	SAVEPOINT p1;-- 设置一个还原点
+	delete from t1 where id = 12;
+	ROLLBACK TO p1;-- 退回到p1状态
+	ROLLBACK;-- 退回到最初状态
+	COMMIT;-- 提交事务
+	
 -- MySQL
 	-- 日期相关_数据库格式
 		--date 		- 格式 YYYY-MM-DD (1000-01-01 到 9999-12-31)
@@ -154,9 +196,7 @@ drop view view_name;
 		--convert()		用不同的格式显示日期/时间
 	-- NULL相关_SQL函数
 		--isnull(age,0)	如果是NULL则返回0
-
-
-
+		
 
 avg(column_name)-- 返回数值列的平均值
 count(*)-- 返回记录数
@@ -179,13 +219,41 @@ IFNULL(NULL,10)-- 10
 IFNULL(1,0);-- 1
 CONCAT('11','22','33')-- 112233
 CONCAT('11',NULL,'33')-- NULL
+LTRIM("  ZOU")-- 去左边空格
+RTRIM("ZOU  ")-- 去右边空格
+REPEAT("ZOU",3)-- 重复3次：ZOUZOUZOU
+CEILING(1.5)-- 向上取整：2
+FLOOR(1.5)-- 向下取整：1
+RAND()-- 取0-1的随机数：0.2933707249289106
+	SELECT * FROM t1 ORDER BY RAND();-- 随机排序
+
 
 MySql
+	
+	-- 分组查询，各组只取某条件的一条
+	SELECT
+		t_location.*
+	FROM
+		t_location 
+		INNER JOIN (
+			SELECT 
+				MAX(locationTime) ltime, t_location.userId userId
+			FROM 
+				t_location 
+			GROUP BY userId
+		) t1 ON (t1.ltime=t_location.locationTime AND t1.userId=t_location.userId)
+
+	-- 根据自定义的顺序排序
 	ORDER BY field(t_studapply.ssxsq,'市直','鹿城区','瓯海区','龙湾区','经开区','瑞安市','乐清市','永嘉县','平阳县','苍南县','文成县','泰顺县','洞头县')
 
 	-- 一对多关联查询：只拿一个
-	SELECT t_school.*, t_user.mobile 'userMobile'
-	FROM t_school LEFT JOIN t_user ON t_school.id=t_user.schoolId AND t_user.id IN (SELECT min(id) FROM t_user WHERE userGroup='2' AND valid='1' GROUP BY schoolId)
+	SELECT
+		t_school.*, t_user.mobile 'userMobile'
+	FROM
+		t_school 
+		LEFT JOIN t_user ON t_school.id=t_user.schoolId AND t_user.id IN (
+			SELECT min(id) FROM t_user WHERE userGroup='2' AND valid='1' GROUP BY schoolId
+		)
 		
 	-- 一对多查询：一个schoolId对应多个name,name用逗号隔开
 	SELECT schoolId, GROUP_CONCAT(name) AS name_list
@@ -194,7 +262,8 @@ MySql
 	
 	-- 一对多查询：根据条件查询,去掉重复的name,排序,name用‘-’隔开
 	SELECT DISTINCT schoolId, GROUP_CONCAT(DISTINCT name ORDER BY name SEPARATOR '-') AS name_list
-	FROM t_user WHERE userGroup='2'
+	FROM t_user 
+	WHERE userGroup='2'
 	GROUP BY schoolId
 	ORDER BY schoolId
 	
@@ -234,23 +303,6 @@ WHERE creditsUser='1539ba717dff43d09d15c6c34c2536ee';
 		ORDER BY CASE WHEN realname IS NULL THEN 1 ELSE 0 END,realname
 	-- Oracle认为NULL最大
 		ORDER BY realname NULLS FIRST
-
--- 拷贝zaasmis数据库里的表dbo.RYK_RYJBXX到另一个数据库zcjtest里，拷贝后需重新设置主键和标识
-select * 
-into zcjtest.dbo.RYK_RYJBXX
-from zaasmis.dbo.RYK_RYJBXX;
--- 拷贝另一台数据库的表到本地数据库，拷贝后需重新设置主键和标识
-select *
-into cw_zcgl
-from opendatasource('SQLOLEDB','Data Source=192.168.68.160;User ID=sa;Password=123456').zcjtest.dbo.cw_zcgl
--- 拷贝另一台数据库的表到本地数据库(自定义属性)，拷贝后需重新设置主键和标识
-insert into cw_zcgl(ziclb,JILCJZ,JILCJSJ,JILXGZ,JILXGSJ)
-select ziclb,JILCJZ,JILCJSJ,JILXGZ,JILXGSJ
-from opendatasource('SQLOLEDB','Data Source=192.168.68.160;User ID=sa;Password=123456').zcjtest.dbo.cw_zcgl
--- 拷贝-相同服务器-不同数据库-不同表的数据，拷贝后需重新设置主键和标识
-insert into cw_zcgl(kapbh,gudzcbh,gudzcmc)
-select kapbh,gudzcbh,gudzcmc
-from test.dbo.cw_zcgl
 
 
 
