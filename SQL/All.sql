@@ -159,6 +159,40 @@ alter table t_person modify column sex varchar(255);-- mysql
 	ROLLBACK;-- 退回到最初状态
 	COMMIT;-- 提交事务
 	
+
+-- 存储过程【MySQL】
+
+	-- 批量插入100条数据
+	create procedure p1()
+	begin
+		set @i=1;
+		while @i<=100 do
+			insert into t1(name) value(concat("user", @i));
+			set @i=@i+1;
+		end while;
+	end;
+	
+	call p1;-- 执行存储过程
+	
+	
+-- 触发器【MySQL】
+
+	create trigger tg1 before insert on t1 for each row
+	begin
+		insert into t2(id, name) values(new.id, new.name);
+	end;
+	
+	create trigger tg2 before delete on t1 for each row
+	begin
+		delete from t2 where id=old.id;
+	end;
+	
+	create trigger tg3 before update on t1 for each row
+	begin
+		update t2 set name=new.name where id=old.id;
+	end;
+	
+	
 -- MySQL
 	-- 日期相关_数据库格式
 		--date 		- 格式 YYYY-MM-DD (1000-01-01 到 9999-12-31)
