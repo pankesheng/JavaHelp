@@ -347,24 +347,49 @@ WHERE creditsUser='1539ba717dff43d09d15c6c34c2536ee';
 
 
 
--- sql优化
+show status;	-- 显示数据库的本次连接的状态信息
+show global status;	-- 显示数据库的启动以后的状态信息
 
-show status;	-- 显示数据库的当前状态信息
-show global status;	-- 显示数据库从启动到查询的次数
+show global status like 'Com%';	-- 显示所有统计信息
+show global status like 'connections';	-- 试图链接MySql服务器的次数
+show global status like 'uptime';	-- 服务器工作的时间(秒)
+show global status like 'handler_read_key';	-- 值越大越好，表示使用索引查询到的次数
+show global status like 'handler_read_rnd_next'	-- 值越小越好，表示查询低效
 
-show status like 'Com%';	-- 显示当前控制台的情况
-show status like 'connections';	-- 视图链接MySql服务器的次数
-show status like 'uptime';	-- 服务器工作的时间(秒)
-show status like 'handler_read_key';	-- 值越大越好，表示使用索引查询到的次数
-show status like 'handler_read_rnd_next'	-- 值越小越好，表示查询低效
-show status like 'slow_queries';	-- 慢查询的次数(10秒以上)
+-- 查看慢查询的相关参数和统计信息
+	show global status like 'slow_queries';		-- 查看统计：慢查询的次数
+	show variables like 'long_query_time';		-- 查看参数：慢查询的界限几秒
+	show variables like 'log_slow_queries'; 	-- 查看参数：是否开启慢查询记录
+	show variables like 'slow_query_log';		-- 查看参数：是否开启慢查询日志记录
+	show variables like 'show_query_log_file';	-- 查看参数：慢查询日志记录的文件目录
+-- 修改慢查询的相关参数和统计信息
+	-- 在my.ini的[mysqld]下增加如下配置：【重启服务生效】
+	log-slow-queries = F:\mysql_slow_query.log
+	long_query_time=5
+-- 模拟慢查询
+	SELECT SLEEP(10);
 
-show variables like 'long_query_time';	-- 查看参数：慢查询的界限
-set long_query_time=1;
+-- 无法运行大于1M的SQL文件
+	-- 1、查看当前参数值：show variables like '%max_allowed_packet%';
+	-- 2、修改参数：修改my.ini文件中的[mysqld]段中的＂max_allowed_packet = 20M＂(可能有些文件会没有这一行的，如果没有这行内容，增加一行)【重启服务生效】
 
-xxxx>bin\mysqld.exe -show-query-log	-- 启动MySQL服务，并开启查询日志
+-- GROUP_CONCAT 方法只能返回1024个字符，太长会被截取
+	-- 1、查看当前参数值：SELECT @@global.group_concat_max_len;
+	-- 2、修改参数配置：my.ini文件中添加：group_concat_max_len = 1024000
 
 explain sql语句; -- 分析sql语句的效率
+	-- type 字段解析
+		-- system:	表仅一行
+		-- const:	只一行匹配
+		-- eq_ref:	join时使用主键索引
+		-- ref:		join时使用普通索引
+		-- ref_or_null:	同前面对null查询
+		-- index_merge:	使用复合索引
+		-- unique_subquery:	主键子查
+		-- index_subquery:	非主键子查询
+		-- range:	表单中的范围查询
+		-- index:	使用索引
+		-- all:		通过全表扫描得到的数据
 
 -- 优化SQL
 	-- 对于使用like的查询，查询语句中以%开头的条件不能用到索引
