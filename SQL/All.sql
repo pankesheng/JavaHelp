@@ -396,11 +396,11 @@ explain sql语句; -- 分析sql语句的效率
 	-- 优化group by语句：默认情况下，group by会自动进行排序，可以使用order by null禁止排序
 	-- 使用join代替子查询
 	
-  -- Oracle索引优化
+  -- 索引优化
 	-- 不等于表达式是索引无效的。
 		WHERE name!='abc' -- 优化前
 		WHERE name>'abc' OR name<'abc' -- 优化后
-	-- 如果被索引的列在某些行中存在NULL值，就不会使用索引。
+	-- 如果被索引的列在某些行中存在NULL值，就不会使用索引。(where name is null 能使用到索引)
 	-- 如果被索引的列使用函数查询，就不会使用索引。
 		WHERE TRUNC(createDay)='01-MAY-81'-- 优化前
 		WHERE createDay<(TO_DATE('01-MAY-81')+0.9999) -- 优化后
@@ -432,6 +432,7 @@ explain sql语句; -- 分析sql语句的效率
 		-- 将要导入的数据按照主键排序
 		-- set unique_checks=0,关闭唯一性校验
 		-- set autocommit=0,关闭自动提交
+		-- 结束后执行 set unique_checks=1 和 set autocommit=1 恢复
 	-- 内存参数配置
 		-- key_buffer_size
 
