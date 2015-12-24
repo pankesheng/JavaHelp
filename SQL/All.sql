@@ -408,7 +408,7 @@ explain sql语句; -- 分析sql语句的效率
 	-- 如果比较不匹配的数据类型，就不会使用索引。
 		WHERE account_varchar2 = 990354 -- 优化前
 		WHERE account_varchar2 = '990354' -- 优化后
-	-- 如果列的取值固定几种(基数少)，请使用位图索引（列尽量用CHAR不要用VARCHAR2）。
+	-- 如果列的取值固定几种(基数少)，请使用位图索引（列尽量用CHAR不要用VARCHAR2）。【Oracle】
 		CREATE BITMAP INDEX index_hospital ON wsxt(hospital);
 
 -- MyISAM
