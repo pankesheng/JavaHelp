@@ -176,7 +176,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.0.0.Final</version>
+			<version>5.4.24.Final</version>
 		</dependency>
 
 		<!-- Hibernate针对JPA的实现包 -->
